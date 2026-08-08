@@ -16,4 +16,16 @@ public class Message {
     public String getContent () {
         return Content;
     }
+
+    public void setSender(String newSender) {
+        this.Sender = newSender;
+    }
+
+    public void setContent(String newContent) {
+        this.Content = newContent;
+    }
+
+    public void setMessageType(String newMsgType) {
+        this.MsgType = newMsgType;
+    }
 }

@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import com.google.gson.Gson;
+
+import static java.lang.System.out;
 
 public class MessageHandler implements Runnable{
 
@@ -14,10 +18,12 @@ public class MessageHandler implements Runnable{
     MessageHandler (Object Input) {
         this.inputStream = (InputStream) Input;
     }
-    Gson gson = new Gson();
 
-    Message msg = new Message();
-    users usrs = new users();
+    private Gson gson = new Gson();
+    private Message msg = new Message();
+    private users usrs = new users();
+    private Socket socket;
+    private OutputStream output;
 
     @Override
     public void run() {
@@ -26,7 +32,7 @@ public class MessageHandler implements Runnable{
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                out.println(line);
 
                 msg = gson.fromJson(line, Message.class);
 
@@ -36,8 +42,8 @@ public class MessageHandler implements Runnable{
                 } else if (msgType.equals("TextMessage")) {
                     message();
                 } else {
-                    System.out.println("you fucked up somehow");
-                    System.out.println(msgType);
+                    out.println("you fucked up somehow");
+                    out.println(msgType);
                 }
             }
 
@@ -48,27 +54,60 @@ public class MessageHandler implements Runnable{
     }
 
     private void networkConfirmation() {
-        System.out.println("network confirmation");
+        out.println("network confirmation");
 
         String Content = msg.getContent();
         String usr = msg.getUser();
 
         if (Content.equals("Connecting")) {
             usrs.add(usr);
+            out.println(usrs.view().toString());
 
-            System.out.println(usrs.view().toString());
-        } else if (Content.equals("Disonnecting")) {
+            Builder("Confirmation", "Server", "Connected");
+
+
+        } else if (Content.equals("Disconnecting")) {
             usrs.remove(usr);
+            out.println(usrs.view().toString());
 
-            System.out.println(usrs.view().toString());
+            Builder("Confirmation", "Server", "Disconnected");
         }
     }
 
     private void message() {
-        System.out.println("Message");
+        out.println("Message");
     }
 
-    private void create() {
+    private void Builder(String MsgType, String User, String txt) {
 
+        Message sendMsg = new Message();
+
+        sendMsg.setMessageType(MsgType);
+        sendMsg.setSender(User);
+        sendMsg.setContent(txt);
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(sendMsg);
+
+        String FinalMsg = json + "\n";
+
+        try {
+            send(FinalMsg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void send(String Message) throws IOException {
+        String FinalMsg = Message;
+
+        out.println("send reached");
+        out.println(FinalMsg);
+
+        output = socket.getOutputStream();
+
+        output.write(FinalMsg.getBytes());
+        output.flush();
     }
 }
