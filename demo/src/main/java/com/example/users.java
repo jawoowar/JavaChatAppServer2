@@ -1,19 +1,24 @@
 package com.example;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class users {
-    ArrayList<String> users = new ArrayList<String>();
+    private static final ConcurrentHashMap<String, MessageHandler> users = new ConcurrentHashMap<>();
 
-    void add(String usr) {
-        users.add(usr);
-    }
+        void add(String usr, MessageHandler handler) throws IOException {
+            users.put(usr, handler);
 
-    void remove(String usr) {
-        users.remove(usr);
-    }
+        }
 
-    ArrayList view() {
-        return users;
-    }
+        void remove(String usr) {
+            users.remove(usr);
+        }
+
+        ConcurrentHashMap.KeySetView<String, MessageHandler> view() {
+            return users.keySet();
+        }
 }
+

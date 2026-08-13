@@ -14,15 +14,17 @@ import static java.lang.System.out;
 public class MessageHandler implements Runnable{
 
     private final InputStream inputStream;
+    private final Socket socket;
 
-    MessageHandler (Object Input) {
-        this.inputStream = (InputStream) Input;
+    MessageHandler (Socket socket) throws IOException {
+        this.socket = socket;
+        this.inputStream = socket.getInputStream();
+        this.output = socket.getOutputStream();
     }
 
     private Gson gson = new Gson();
     private Message msg = new Message();
     private users usrs = new users();
-    private Socket socket;
     private OutputStream output;
 
     @Override
@@ -48,29 +50,33 @@ public class MessageHandler implements Runnable{
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            if (!socket.isClosed()) {
+                throw new RuntimeException(e);
+            }
+
         }
 
     }
 
-    private void networkConfirmation() {
+    private void networkConfirmation() throws IOException {
         out.println("network confirmation");
 
         String Content = msg.getContent();
         String usr = msg.getUser();
 
         if (Content.equals("Connecting")) {
-            usrs.add(usr);
+            usrs.add(usr, this);
             out.println(usrs.view().toString());
 
             Builder("Confirmation", "Server", "Connected");
+            Builder("UserList", "Users", String.join(",", usrs.view()));
 
 
         } else if (Content.equals("Disconnecting")) {
             usrs.remove(usr);
             out.println(usrs.view().toString());
-
-            Builder("Confirmation", "Server", "Disconnected");
+            System.out.println("disconnect reached");
+            socket.close();
         }
     }
 
@@ -78,7 +84,7 @@ public class MessageHandler implements Runnable{
         out.println("Message");
     }
 
-    private void Builder(String MsgType, String User, String txt) {
+    void Builder(String MsgType, String User, String txt) {
 
         Message sendMsg = new Message();
 
@@ -104,8 +110,6 @@ public class MessageHandler implements Runnable{
 
         out.println("send reached");
         out.println(FinalMsg);
-
-        output = socket.getOutputStream();
 
         output.write(FinalMsg.getBytes());
         output.flush();
