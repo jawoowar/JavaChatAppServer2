@@ -1,8 +1,7 @@
 package com.example;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class users {
@@ -20,5 +19,23 @@ public class users {
         ConcurrentHashMap.KeySetView<String, MessageHandler> view() {
             return users.keySet();
         }
+
+
+        void outputToAll(String msgType, String sender, String content) {  // send to all
+            for (MessageHandler handler : users.values()) {
+
+                handler.Builder(msgType, sender, content);
+            }
+        }
+
+        void outputToMost(String msgType, String sender, String content, String ExeptedUser) {  // send to all users but exepted
+            users.forEach((usr, handler) -> {
+                if (!usr.equals(ExeptedUser)) {
+                    handler.Builder(msgType, sender, content);
+                }
+            });
+        }
+
+
 }
 

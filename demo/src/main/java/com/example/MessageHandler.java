@@ -69,7 +69,12 @@ public class MessageHandler implements Runnable{
             out.println(usrs.view().toString());
 
             Builder("Confirmation", "Server", "Connected");
+
             Builder("UserList", "Users", String.join(",", usrs.view()));
+
+            //usrs.outputToAll("UserList", "Users", String.join(",", usrs.view()));     outputs all usrs to all
+
+            usrs.outputToAll("NewUser", "Users", ("the user " + usr + " has joined"));  //  outputs new user to all
 
 
         } else if (Content.equals("Disconnecting")) {
@@ -81,7 +86,7 @@ public class MessageHandler implements Runnable{
     }
 
     private void message() {
-        out.println("Message");
+        usrs.outputToMost("Message", msg.getUser(), msg.getContent(), msg.getUser());  //  outputs new user to all
     }
 
     void Builder(String MsgType, String User, String txt) {
@@ -109,7 +114,7 @@ public class MessageHandler implements Runnable{
         String FinalMsg = Message;
 
         out.println("send reached");
-        out.println(FinalMsg);
+        out.println(FinalMsg + "\n");
 
         output.write(FinalMsg.getBytes());
         output.flush();
