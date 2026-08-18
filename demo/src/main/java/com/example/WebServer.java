@@ -1,6 +1,7 @@
 package com.example;
 
 import com.sun.net.httpserver.HttpServer;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -23,12 +24,18 @@ public class WebServer implements Runnable{
         });
 
         try {
+
+
             // creates https server + sets socket and https url
             HttpServer server = HttpServer.create(new InetSocketAddress("localhost", port), 0);
 
             server.setExecutor(threadPool);
             server.start();
             System.out.println("Server started on port " + port);
+
+            server.createContext("/", new website());
+
+
         }
         catch (IOException e) {
             e.printStackTrace();

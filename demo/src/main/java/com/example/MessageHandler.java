@@ -13,6 +13,8 @@ import static java.lang.System.out;
 
 public class MessageHandler implements Runnable{
 
+    FileHandler file = new FileHandler();
+
     private final InputStream inputStream;
     private final Socket socket;
 
@@ -85,8 +87,10 @@ public class MessageHandler implements Runnable{
         }
     }
 
-    private void message() {
+    private void message() throws IOException {
         usrs.outputToMost("Message", msg.getUser(), msg.getContent(), msg.getUser());  //  outputs new user to all
+        String output = String.format("%s: %s", msg.getUser(), msg.getContent());
+        file.Write(output);
     }
 
     void Builder(String MsgType, String User, String txt) {

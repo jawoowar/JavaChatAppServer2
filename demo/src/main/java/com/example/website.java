@@ -14,15 +14,31 @@ public class website implements HttpHandler {
         OutputStream out = exchange.getResponseBody();
 
         StringBuilder builder = new StringBuilder();
+        users usrs = new users();
 
-        builder.append("<html><body>");
-        builder.append("<h1>Hello World</h1>");
-        builder.append("</body></html>");
+        String armount = String.valueOf(usrs.view());
 
-        byte[] responseBytes = builder.toString().getBytes("UTF-8");
-        exchange.sendResponseHeaders(200, responseBytes.length);
-        out.write(responseBytes);
-        out.flush();
-        out.close();
+
+
+        String pagePath = exchange.getRequestURI().getPath().substring(1);
+        System.out.println(pagePath);
+
+        //builder.append("<html><body>");
+        //builder.append("<h1>" + armount + "</h1>");
+        //builder.append("<h1>" + pagePath + "</h1>");
+        //builder.append("</body></html>");
+
+        String file = FileHandler.Load("index.html");
+        if (file != null) {
+            byte[] responseBytes = file.getBytes("UTF-8");
+            exchange.sendResponseHeaders(200, responseBytes.length);
+            out.write(responseBytes);
+            out.flush();
+            out.close();
+        } else {
+            exchange.sendResponseHeaders(404, 0);
+        }
+
+
     }
 }
