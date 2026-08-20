@@ -1,6 +1,35 @@
 <html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <header>
+        <h1>System info</h1>
+    </header>
+
 <body>
-current users: {users}
-amount of users: {userCount}
+    <div class="main">
+
+        <div class="element">
+            <h2>ram usage: {ramUsage}</h2>
+        </div>
+        <div class="element">
+            <h2>free ram: {totalRam}</h2>
+        </div>
+        <div class="element">
+            <h2>available processes: {totalCPU}</h2>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="element">
+            <h2>current users: {users}</h2>
+        </div>
+        <div class="element">
+            <h2>amount of users: {userCount}</h2>
+        </div>
+    </div>
+    
+
+
 </body>
 </html>
