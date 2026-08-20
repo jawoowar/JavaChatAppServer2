@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class website implements HttpHandler {
+public class Website implements HttpHandler {
 
 
     @Override
@@ -16,11 +16,15 @@ public class website implements HttpHandler {
         StringBuilder builder = new StringBuilder();
         users usrs = new users();
 
-        String armount = String.valueOf(usrs.view());
+
+        String UsrListStr = String.valueOf(usrs.view());
+        String UsrCount = String.valueOf(usrs.view().size());
 
 
 
-        String pagePath = exchange.getRequestURI().getPath().substring(1);
+
+
+        String pagePath = exchange.getRequestURI().getPath();
         System.out.println(pagePath);
 
         //builder.append("<html><body>");
@@ -28,7 +32,11 @@ public class website implements HttpHandler {
         //builder.append("<h1>" + pagePath + "</h1>");
         //builder.append("</body></html>");
 
-        String file = FileHandler.Load("index.html");
+        String file = FileHandler.Load("demo/src/main/resources/index.html");
+
+        file = file.replace("{users}", UsrListStr);
+        file = file.replace("{userCount}", UsrCount);
+
         if (file != null) {
             byte[] responseBytes = file.getBytes("UTF-8");
             exchange.sendResponseHeaders(200, responseBytes.length);

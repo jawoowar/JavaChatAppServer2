@@ -25,7 +25,11 @@ public class FileHandler {
             FileInputStream input = new FileInputStream(fileName);
             file = new String(input.readAllBytes());
             input.close();
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found");
+            return null;
+        }
+        catch (IOException e) {
             return null;
         }
         return file;

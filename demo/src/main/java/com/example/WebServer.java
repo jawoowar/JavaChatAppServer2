@@ -33,7 +33,8 @@ public class WebServer implements Runnable{
             server.start();
             System.out.println("Server started on port " + port);
 
-            server.createContext("/", new website());
+
+            server.createContext("/", new Website());
 
 
         }
