@@ -4,6 +4,16 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * FileHandler
+ *
+ * handles the files
+ *
+ * Write is used only to log files in the chat logs so all formatting is done inside it.
+ *
+ * Load loads the files via a FileInputStream.
+ */
+
 public class FileHandler {
 
     public void Write(String input) throws IOException {

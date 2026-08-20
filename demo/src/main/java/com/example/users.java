@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Users
+ *
+ * this class is used to hold informatinon about the connected users in a concurrent hash map, avalible no matter the thread it is called from. The hashmap hold the username and a reference to the "MessageHandler" the user uses.
+ */
+
 public class users {
     private static final ConcurrentHashMap<String, MessageHandler> users = new ConcurrentHashMap<>();
 

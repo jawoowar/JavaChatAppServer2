@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * Message
+ *
+ * This class is used entirely to hold the information about the current message
+ */
+
 public class Message {
     private String MsgType;
     private String Sender;

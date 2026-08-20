@@ -11,6 +11,24 @@ import com.google.gson.Gson;
 
 import static java.lang.System.out;
 
+/**
+ * Message Handler
+ *
+ * This is where all inputs into the server are initally handled. a new Handler is called for each user who is connected and saved inside "Users"
+ *
+ * Two types of messages are send from here being "message" and "network configuration".
+ *
+ * network configuration is handled separetly because of nessasary action that need to take place when disconnecting. also the messages sent from network configuration are predetermined to can be hard coded in.
+ *
+ * Message take the information from the message class and convert it into JSON (using googles "gson") which can be docoded in the client, and is sent via the "send" function
+ *
+ * Builder is used set veriables in the "message" class so that they can be called on in the future. those veriable being user, message type and contence
+ *
+ * Send simply sends the message but is used to reduce repeating code over the program
+ *
+ *
+ */
+
 public class MessageHandler implements Runnable{
 
     FileHandler file = new FileHandler();

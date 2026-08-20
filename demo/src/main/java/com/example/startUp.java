@@ -3,6 +3,12 @@ package com.example;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * StartUp
+ *
+ * this class is used to confirm all nessasary files are created and avalible to use later down the line
+ */
+
 public class startUp {
 
     public void CheckFile() {
