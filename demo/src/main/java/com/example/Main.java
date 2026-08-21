@@ -10,17 +10,26 @@ import java.util.Scanner;
 
 /**
  * Java Chat App
- * @author Jennifer Woodward
+ * @author Jennifer
  *
  * This project is a java chat app with a chat logs and a locally hosted web server to monitor connected users and system information.
  *
  */
 
-/**
- * in the main class the program all nessacery information being website port and server port. then when running starts the webserver and a new threads when a new user connects
- */
-
 public class Main {
+
+    /**
+     * main is used for initiating the {@link startUp} and gathering nessacery information about the server, (webport and socket port).
+     * <p>
+     *     it also handles creation of new threads when a new user join and handing them over to {@link MessageHandler}
+     * </p>
+     * <p>
+     *     the webserver is also started here via {@code WebServer} using {@link WebServer}
+     * </p>
+     *
+     * @param args
+     * @throws IOException throws when unable to start a new thread
+     */
     public static void main(String[] args) throws IOException {
 
         startUp su = new startUp();

@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * StartUp
  *
- * this class is used to confirm all nessasary files are created and avalible to use later down the line
+ * Checks if all nessacery files are avalible, if they are not it created them using {@code File}
+ *
+ * @author Jennifer
+ *
  */
 
 public class startUp {

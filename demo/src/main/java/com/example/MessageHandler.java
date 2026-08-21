@@ -11,30 +11,24 @@ import com.google.gson.Gson;
 
 import static java.lang.System.out;
 
-/**
- * Message Handler
- *
- * This is where all inputs into the server are initally handled. a new Handler is called for each user who is connected and saved inside "Users"
- *
- * Two types of messages are send from here being "message" and "network configuration".
- *
- * network configuration is handled separetly because of nessasary action that need to take place when disconnecting. also the messages sent from network configuration are predetermined to can be hard coded in.
- *
- * Message take the information from the message class and convert it into JSON (using googles "gson") which can be docoded in the client, and is sent via the "send" function
- *
- * Builder is used set veriables in the "message" class so that they can be called on in the future. those veriable being user, message type and contence
- *
- * Send simply sends the message but is used to reduce repeating code over the program
- *
- *
- */
-
 public class MessageHandler implements Runnable{
 
     FileHandler file = new FileHandler();
 
     private final InputStream inputStream;
     private final Socket socket;
+
+    /**
+     *
+     * the main functions are brought in those being {@code InputStream}, {@code Socket}, {@code Gson}, {@code Message}, {@code users}, and {@code OutpurStream}.
+     * <p>
+     *     it begins with {@link run()} which opens up the InputStream, sets relevent veriables in {@link Message}, then calls relevent functions based on the {@code msgTyoe}.
+     * </p>
+     *
+     * @param socket handed into this function after being set in {@link Main}, then {@code getInputStream()} and {@code getOutputStream()} streams are created from it
+     * @throws IOException thrown if the socket is closed
+     * @author Jennifer
+     */
 
     MessageHandler (Socket socket) throws IOException {
         this.socket = socket;
@@ -78,11 +72,22 @@ public class MessageHandler implements Runnable{
 
     }
 
+    /**
+     *
+     * gets the {@code Content} and {@code usr} from and depending on the "content" chooses between "connecting" and "Disconnecting".
+     *
+     * @throws IOException throws if socket doesnt close
+     */
+
     private void networkConfirmation() throws IOException {
         out.println("network confirmation");
 
         String Content = msg.getContent();
         String usr = msg.getUser();
+
+        /**
+         * adds usr and their {@link MessageHandler} to the hashmap inside {@link users}. then sends a confirmation message to the user connecting and new user message to all other connected users
+         */
 
         if (Content.equals("Connecting")) {
             usrs.add(usr, this);
@@ -97,6 +102,12 @@ public class MessageHandler implements Runnable{
             usrs.outputToAll("NewUser", "Users", ("the user " + usr + " has joined"));  //  outputs new user to all
 
 
+            /**
+             *
+             * removes user from the hashmap inside {@link users} and closes the {@code socket}
+             *
+             */
+
         } else if (Content.equals("Disconnecting")) {
             usrs.remove(usr);
             out.println(usrs.view().toString());
@@ -105,11 +116,29 @@ public class MessageHandler implements Runnable{
         }
     }
 
+    /**
+     *
+     * sends message to all users other then the one sending it via the {@link users#outputToMost(String, String, String, String)} passing over the MsgType "Message" and the stored information inside {@link Message}.
+     * <p>
+     *     also writes to a "chatlog" via {@link FileHandler#Write(String)}
+     * </p>
+     * @throws IOException throws if unable to write to file
+     */
+
     private void message() throws IOException {
-        usrs.outputToMost("Message", msg.getUser(), msg.getContent(), msg.getUser());  //  outputs new user to all
+        usrs.outputToMost("Message", msg.getUser(), msg.getContent(), msg.getUser());  //  outputs new user to all but the sending user
         String output = String.format("%s: %s", msg.getUser(), msg.getContent());
         file.Write(output);
     }
+
+    /**
+     *
+     * Sets information inside the middle man {@link Message}, then formats the information into JSON using {@code gson} to then be send to the relevent user via {@link send}
+     *
+     * @param MsgType Type of message sending so it can be proparly interpreted on the clients side
+     * @param User The user sending the message
+     * @param txt the contence of the message
+     */
 
     void Builder(String MsgType, String User, String txt) {
 
@@ -131,6 +160,13 @@ public class MessageHandler implements Runnable{
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * This sends the message to the user using the output Stream spesified in {@link MessageHandler}
+     *
+     * @param Message the message beind sendk build in {@link #Builder(String, String, String)}
+     * @throws IOException throws if unable to write or flush socket
+     */
 
     private void send(String Message) throws IOException {
         String FinalMsg = Message;

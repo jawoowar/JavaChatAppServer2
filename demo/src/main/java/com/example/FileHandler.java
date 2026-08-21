@@ -5,16 +5,24 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * FileHandler
  *
- * handles the files
+ * Writes to chat logs and reads from web display files
+ * @author Jennifer
  *
- * Write is used only to log files in the chat logs so all formatting is done inside it.
- *
- * Load loads the files via a FileInputStream.
  */
 
 public class FileHandler {
+
+    /**
+     * Only used for writing to Chatlogs so holds all formatting for it inside
+     * <p>
+     *     formats {@code input} by putting the current time are the start, the prior formatted message and putting a line break on the end.
+     *     uses {@code Writer} to write to files nad {@code LocalDateTIme} to handle gathering the current date and time
+     * </p>
+     *
+     * @param input the message to the saved
+     * @throws IOException throws when unable to write to file
+     */
 
     public void Write(String input) throws IOException {
 

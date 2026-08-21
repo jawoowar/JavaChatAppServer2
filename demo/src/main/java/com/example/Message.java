@@ -1,9 +1,11 @@
 package com.example;
 
 /**
- * Message
  *
- * This class is used entirely to hold the information about the current message
+ * Used as a middle man by {@link MessageHandler} when handling files to avoid repetative use of paramiters
+ *
+ * @author Jennifer
+ *
  */
 
 public class Message {
