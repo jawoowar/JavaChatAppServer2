@@ -177,4 +177,16 @@ public class MessageHandler implements Runnable{
         output.write(FinalMsg.getBytes());
         output.flush();
     }
+
+    public void ServerDisconnect(){
+        Builder("ConnectionStatus", "Server", "Server Closed");
+        System.out.println("disconnect message Sent");
+
+    }
+
+    public void closer() throws IOException {
+        inputStream.close();
+        output.close();
+        socket.close();
+    }
 }

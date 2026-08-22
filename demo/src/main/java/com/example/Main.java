@@ -8,6 +8,14 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/* TO DO
+    - Docs on Users, Webserver and Website
+    - CSS working on website
+    - refreshing on website
+    - way to end server when its running
+ */
+
+
 /**
  * Java Chat App
  * @author Jennifer
@@ -27,7 +35,7 @@ public class Main {
      *     the webserver is also started here via {@code WebServer} using {@link WebServer}
      * </p>
      *
-     * @param args
+     * @param args unused
      * @throws IOException throws when unable to start a new thread
      */
     public static void main(String[] args) throws IOException {
@@ -60,19 +68,35 @@ public class Main {
         System.out.println("Web server opened");
 
 
+
+
         try {
             ServerSocket socket = new ServerSocket(ServerPort);
             boolean running = true;
 
+            close close = new close(socket);
+
+            new Thread(close).start();
+
             while (running) {
-                Socket clientSocket = socket.accept();
-                System.out.println("socket accepted");
+                try {
+                    Socket clientSocket = socket.accept();
+                    System.out.println("socket accepted");
 
-                MessageHandler msgHandle = new MessageHandler(clientSocket);
+                    MessageHandler msgHandle = new MessageHandler(clientSocket);
 
-                System.out.print(clientSocket.getInputStream());
+                    System.out.print(clientSocket.getInputStream());
 
-                new Thread(msgHandle).start();
+                    new Thread(msgHandle).start();
+                } catch (IOException e) {
+                    if (socket.isClosed()) {
+                        System.out.println("server closed");
+                        running = false;
+                    } else {
+                        throw new RuntimeException(e);
+                    }
+                }
+
 
             }
         } catch (IOException e) {
@@ -81,4 +105,7 @@ public class Main {
 
 
     }
+
+
+
 }

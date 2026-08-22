@@ -42,6 +42,22 @@ public class users {
             });
         }
 
+        static void clear() {
+            users.clear();
+        }
+
+        static void close() {
+            for (MessageHandler handler : users.values()) {
+
+                try {
+                    handler.ServerDisconnect();
+                    handler.closer();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
 
 }
 
