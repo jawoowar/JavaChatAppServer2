@@ -42,7 +42,6 @@ public class Website implements HttpHandler {
 
 
         String pagePath = exchange.getRequestURI().getPath();
-        System.out.println(pagePath);
 
         /**
          * gets the index.html file via {@link FileHandler#Load(String)}, then populates it with information assigned earlier using String replacement

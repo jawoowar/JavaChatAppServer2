@@ -69,4 +69,9 @@ the nature of chat apps is that people can communicate and with that comes issue
 - to counteract this I implemented a chatlog that can only be written to so that if nessacery it can be used later to help if any intervatino takes place.
 
 
+External library used
+-
+Gson
+- com.google.code.gson
+
 
