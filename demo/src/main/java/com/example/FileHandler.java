@@ -37,6 +37,15 @@ public class FileHandler {
 
     }
 
+    /**
+     * Reads from a file via a {@code FileInputStream}, reading all the bytes and assigning the read data to a {@code file} veriables which can be passed back to the code calling the function.
+     *
+     * @param fileName the file path/ file name of the wanted file
+     * @return returns the file as a String data type
+     *
+     * @throws IOException if error occurs while reading file, returns Null
+     */
+
     static String Load(String fileName) {
         String file = null;
         try {

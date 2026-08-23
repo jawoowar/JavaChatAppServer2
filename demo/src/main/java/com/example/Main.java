@@ -11,8 +11,6 @@ import java.util.Scanner;
 /* TO DO
     - Docs on Users, Webserver and Website
     - CSS working on website
-    - refreshing on website
-    - way to end server when its running
  */
 
 
@@ -33,6 +31,9 @@ public class Main {
      * </p>
      * <p>
      *     the webserver is also started here via {@code WebServer} using {@link WebServer}
+     * </p>
+     * <p>
+     *     using {@link close} the program listens for the nessacery closure string "/close" and closes the socket, this is seen by the main message handling loop and stops the server running
      * </p>
      *
      * @param args unused

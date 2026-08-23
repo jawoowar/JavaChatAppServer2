@@ -5,20 +5,37 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ *
+ * close is used to initiate the closure of the program.
+ * if is created on a new thread in {@link Main} to listen for server staff inputs while the server runs
+ *
+ * @author Jennifer
+ *
+ */
+
 public class close implements Runnable{
 
     ServerSocket socket;
+
+    /**
+     * this takes the {@code ServerSocket} from {@link Main} so it can be proparly closed later
+     *
+     * @param socket taked from main so it can be proparly closed later
+     */
 
     close(ServerSocket socket) {
         this.socket = socket;
     }
 
-    // get server port from main create new server port and use in message handler then close when done
-
         Scanner scan = new Scanner(System.in);
         users usrs = new users();
 
-        @Override
+    /**
+     * when the nessacery phrase is inputted ("/close") the {@link #close()} function is ran takign the steps to shut down the server
+     *
+     */
+    @Override
         public void run() {
             while (true) {
                 String msg = scan.nextLine();
@@ -34,7 +51,12 @@ public class close implements Runnable{
             }
         }
 
-
+    /**
+     * takes steps to close the server proparly via functions inside {@link users}
+     *
+     * @throws IOException throws if unable to complete functino in users
+     * @throws InterruptedException throws if unable to close socket
+     */
 
     public void close() throws IOException, InterruptedException {
         System.out.println("Closing");

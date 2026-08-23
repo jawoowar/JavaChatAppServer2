@@ -178,11 +178,21 @@ public class MessageHandler implements Runnable{
         output.flush();
     }
 
+    /**
+     * sends out a messsage to all connected clients saying the server is closed using the {@link #Builder(String, String, String)} function
+     */
+
     public void ServerDisconnect(){
         Builder("ConnectionStatus", "Server", "Server Closed");
         System.out.println("disconnect message Sent");
 
     }
+
+    /**
+     * closes inputStream, outputStream and socket
+     *
+     * @throws IOException throws if unable to close any listen element
+     */
 
     public void closer() throws IOException {
         inputStream.close();

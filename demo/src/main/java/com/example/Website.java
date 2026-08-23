@@ -6,8 +6,21 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * gets website, displays it and populates it with server information
+ *
+ * @author Jennifer
+ */
+
 public class Website implements HttpHandler {
 
+    /**
+     * calls to {@link users} and {@code runtime} to gather nessacery information
+     *
+     * @param exchange the exchange containing the request from the
+     *                 client and used to send the response
+     * @throws IOException throws if unable to load index.html file
+     */
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -31,6 +44,9 @@ public class Website implements HttpHandler {
         String pagePath = exchange.getRequestURI().getPath();
         System.out.println(pagePath);
 
+        /**
+         * gets the index.html file via {@link FileHandler#Load(String)}, then populates it with information assigned earlier using String replacement
+         */
 
         String file = FileHandler.Load("demo/src/main/resources/index.html");
 
@@ -40,6 +56,9 @@ public class Website implements HttpHandler {
         file = file.replace("{totalRam}", String.valueOf(freeMemory));
         file = file.replace("{totalCPU}", String.valueOf(freeProcesses));
 
+        /**
+         * finally displays the edited HTML file to the local host server
+         */
         if (file != null) {
             byte[] responseBytes = file.getBytes("UTF-8");
             exchange.sendResponseHeaders(200, responseBytes.length);
