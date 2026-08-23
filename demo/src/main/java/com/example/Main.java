@@ -103,6 +103,8 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        System.exit(0);
+
 
     }
 
